@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright (c) XeroSec, Inc.
 // SPDX-License-Identifier: MPL-2.0
 
 package provider
@@ -12,28 +12,25 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
-func TestAccExampleDataSource(t *testing.T) {
+func TestAccAPIKeysDataSource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Read testing
 			{
-				Config: testAccExampleDataSourceConfig,
+				Config: testAccAPIKeysDataSourceConfig,
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.scaffolding_example.test",
-						tfjsonpath.New("id"),
-						knownvalue.StringExact("example-id"),
-					),
+						"data.xai_api_keys.test",
+						tfjsonpath.New("api_keys"),
+						knownvalue.ListExact([]knownvalue.Check{})),
 				},
 			},
 		},
 	})
 }
 
-const testAccExampleDataSourceConfig = `
-data "scaffolding_example" "test" {
-  configurable_attribute = "example"
-}
+const testAccAPIKeysDataSourceConfig = `
+data "xai_api_keys" "test" {}
 `

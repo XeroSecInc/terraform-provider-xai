@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright (c) XeroSec, Inc.
 // SPDX-License-Identifier: MPL-2.0
 
 package provider
@@ -13,62 +13,35 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
-func TestAccExampleResource(t *testing.T) {
+func TestAccAPIKeyResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccExampleResourceConfig("one"),
+				Config: testAccAPIKeyResourceConfig("test-key"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
-						tfjsonpath.New("id"),
-						knownvalue.StringExact("example-id"),
-					),
-					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
-						tfjsonpath.New("defaulted"),
-						knownvalue.StringExact("example value when not configured"),
-					),
-					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
-						tfjsonpath.New("configurable_attribute"),
-						knownvalue.StringExact("one"),
-					),
+						"xai_api_key.test",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-key")),
 				},
 			},
 			// ImportState testing
 			{
-				ResourceName:      "scaffolding_example.test",
+				ResourceName:      "xai_api_key.test",
 				ImportState:       true,
 				ImportStateVerify: true,
-				// This is not normally necessary, but is here because this
-				// example code does not have an actual upstream service.
-				// Once the Read method is able to refresh information from
-				// the upstream service, this can be removed.
-				ImportStateVerifyIgnore: []string{"configurable_attribute", "defaulted"},
 			},
 			// Update and Read testing
 			{
-				Config: testAccExampleResourceConfig("two"),
+				Config: testAccAPIKeyResourceConfig("updated-test-key"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
-						tfjsonpath.New("id"),
-						knownvalue.StringExact("example-id"),
-					),
-					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
-						tfjsonpath.New("defaulted"),
-						knownvalue.StringExact("example value when not configured"),
-					),
-					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
-						tfjsonpath.New("configurable_attribute"),
-						knownvalue.StringExact("two"),
-					),
+						"xai_api_key.test",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("updated-test-key")),
 				},
 			},
 			// Delete testing automatically occurs in TestCase
@@ -76,10 +49,10 @@ func TestAccExampleResource(t *testing.T) {
 	})
 }
 
-func testAccExampleResourceConfig(configurableAttribute string) string {
+func testAccAPIKeyResourceConfig(name string) string {
 	return fmt.Sprintf(`
-resource "scaffolding_example" "test" {
-  configurable_attribute = %[1]q
+resource "xai_api_key" "test" {
+  name = %[1]q
 }
-`, configurableAttribute)
+`, name)
 }

@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright (c) XeroSec, Inc.
 // SPDX-License-Identifier: MPL-2.0
 
 //go:build generate
@@ -10,13 +10,12 @@ import (
 	_ "github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs"
 )
 
-// Generate copyright headers
-//go:generate go run github.com/hashicorp/copywrite headers -d .. --config ../.copywrite.hcl
-
 // Format Terraform code for use in documentation.
 // If you do not have Terraform installed, you can remove the formatting command, but it is suggested
 // to ensure the documentation is formatted properly.
 //go:generate terraform fmt -recursive ../examples/
 
 // Generate documentation.
-//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir .. -provider-name scaffolding
+// NOTE: Documentation generation is disabled for local development since the provider
+// is not yet published to a registry. Uncomment this line after publishing the provider.
+// //go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir .. -provider-name xai
