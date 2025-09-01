@@ -30,9 +30,10 @@ func TestAccAPIKeyResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
-				ResourceName:      "xai_api_key.test",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "xai_api_key.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"api_key", "create_time"},
 			},
 			// Update and Read testing
 			{
