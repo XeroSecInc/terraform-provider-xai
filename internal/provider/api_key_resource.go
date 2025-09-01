@@ -414,13 +414,13 @@ func (r *APIKeyResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	// Set QPS, QPM, TPM - handle nil values
 	if updatedAPIKey.QPS != nil {
-		data.QPS = types.Int64Value(int64(*updatedAPIKey.QPS))
+		data.QPS = types.Int64Value(*updatedAPIKey.QPS)
 	} else {
 		data.QPS = types.Int64Null()
 	}
 
 	if updatedAPIKey.QPM != nil {
-		data.QPM = types.Int64Value(int64(*updatedAPIKey.QPM))
+		data.QPM = types.Int64Value(*updatedAPIKey.QPM)
 	} else {
 		data.QPM = types.Int64Null()
 	}
@@ -439,10 +439,9 @@ func (r *APIKeyResource) Update(ctx context.Context, req resource.UpdateRequest,
 			return
 		}
 		data.ACLs = aclList
-	} else {
-		// API didn't return ACLs, preserve what was planned
-		// Keep the planned ACLs since API doesn't echo them back
 	}
+	// If API didn't return ACLs, preserve what was planned
+	// (Keep the planned ACLs since API doesn't always echo them back)
 
 	// Note: APIKey is not returned in update responses, so we don't update it
 	data.APIKey = state.APIKey // Preserve original API key value
