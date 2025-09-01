@@ -81,5 +81,7 @@ jobs:
       - run: go mod download
       - env:
           TF_ACC: "1"
+          XAI_ADMIN_API_KEY: ${{ secrets.XAI_ADMIN_API_KEY }}
+          XAI_TEAM_ID: ${{ secrets.XAI_TEAM_ID }}
         run: go test -v -cover ./internal/provider/
         timeout-minutes: 10
