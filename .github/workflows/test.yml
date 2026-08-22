@@ -8,6 +8,7 @@ on:
     paths-ignore:
       - "README.md"
   push:
+    branches: [main]
     paths-ignore:
       - "README.md"
 
@@ -17,7 +18,7 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.head.repo.full_name || github.repository }}-${{ github.head_ref || github.ref_name }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # Ensure project builds before running testing matrix
